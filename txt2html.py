@@ -64,12 +64,13 @@ def process_folder(input_folder, output_folder):
 
 def main():
     if len(sys.argv) < 2 or "-h" in sys.argv or "--help" in sys.argv:
+        print("txt2html version: 0.1")
         print("Usage:")
         print("   To generate html from a txt file: ./text2html.py input_file.txt")
         print("   To generate html from a folder which has txt files: ./text2html.py folder-name")
         sys.exit(0)
     elif "-v" in sys.argv or "--version" in sys.argv:
-        print("Version: 0.1")
+        print("txt2html version: 0.1")
         sys.exit(0)
 
     # Create a folder named 'txt2html' or remove it if it exists
