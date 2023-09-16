@@ -47,7 +47,7 @@ To generate html from a folder which has txt files:
 ./txt2html.py folder-name
 ```
 
-# Command Flags
+## Command Flags
 
 <!-- Available command options:
 ```
