@@ -29,7 +29,7 @@ Clone the Repo
 
 ```bash
 git clone https://github.com/mingming-ma/txt2html.git
-$ cd txt2html 
+cd txt2html 
 ```
 
 Make the tool executable
