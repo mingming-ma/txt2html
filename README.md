@@ -13,6 +13,7 @@
 ### Planned features
 - [ ] User specified output path
 - [ ] Set title from input file content
+- [ ] Additional \<br \/\> tags to match empty lines
 
 
 ## How to Install 
