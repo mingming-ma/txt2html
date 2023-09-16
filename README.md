@@ -1,4 +1,4 @@
-<h1 align="center">text2html</h1>
+<h1 align="center">txt2html</h1>
 
 <div align="center">
  
@@ -15,17 +15,46 @@
 - [ ] Set title from input file content
 
 
-## Usage
+## How to Install 
+
+**In command line:**
+
+Make sure python3 is installed:
+```bash
+python3 --version
+```
+
+Clone the Repo
+
+```bash
+git clone https://github.com/mingming-ma/txt2html.git
+$ cd txt2html 
+```
+
 Make the tool executable
 ```bash
-chmod +x text2html.py
+chmod +x txt2html.py
 ```
+## Usage
 
 To generate html from a txt file: 
 ```bash
-./text2html.py input_file.txt
+./txt2html.py input_file.txt
 ```
 To generate html from a folder which has txt files: 
 ```bash
-./text2html.py folder-name
+./txt2html.py folder-name
 ```
+
+# Command Flags
+
+<!-- Available command options:
+```
+-v,--version - Displays the version of the tool
+-h,--help - Displays the help message
+``` -->
+
+| Command   | Description |
+| --------- | ----------- |
+| -v, --version | Displays the version of the tool |
+| -h, --help | Displays the help message |
