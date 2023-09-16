@@ -8,7 +8,11 @@
 
 ## Features
 
- - This is a command-line tool process input txt files output html files.
+- This is a command-line tool process input txt files output html files.
+
+### Planned features
+- [ ] User specified output path
+- [ ] Set title from input file content
 
 
 ## Usage
@@ -25,4 +29,3 @@ To generate html from a folder which has txt files:
 ```bash
 ./text2html.py folder-name
 ```
-
