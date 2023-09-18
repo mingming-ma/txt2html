@@ -56,6 +56,6 @@ To generate html from a folder which has txt files:
 
 | Command   | Description |
 | --------- | ----------- |
-| -v, --version | Displays the version of the tool |
 | -h, --help | Displays the help message |
+| -v, --version | Displays the version of the tool |
 | -o, --output | Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.|
