@@ -18,10 +18,28 @@ def process_text_file(input_file, output_folder):
 
     # Combine each line with <p> tag
     bodyParagraph = ""
-    for l in text_lines:
-        updatedLine = l.strip()
-        bodyParagraph += "<p>" + updatedLine + "</p>\n"
+    title = filename
+    html_title = False
 
+    # Read the first line
+    if len(text_lines) >= 1:
+        first_line = text_lines[0].strip()
+
+        # Check if it's not empty and there are at least two more lines available
+        if first_line and len(text_lines) >= 3 and text_lines[1].strip() == "" and text_lines[2].strip() == "":
+            # Use first_line as a title content
+            title = first_line
+            bodyParagraph += "<h1>" + title + "</h1>"
+            html_title = True
+
+            for i in range(1, len(text_lines)):
+                updatedLine = text_lines[i].strip()
+                bodyParagraph += "<p>" + updatedLine + "</p>\n"
+
+    if not html_title:
+        for l in text_lines:
+            updatedLine = l.strip()
+            bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
     # Generate the HTML content
     html_content = f"""
@@ -29,7 +47,7 @@ def process_text_file(input_file, output_folder):
 <html>
 <head>
 <meta charset="utf-8">
-<title>{filename}</title>
+<title>{title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
