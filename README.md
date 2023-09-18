@@ -12,7 +12,7 @@
 
 ### Planned features
 - [x] User specified output path (version 0.1.1)
-- [ ] Set title from input file content
+- [x] Set title from input file content (version 0.1.2)
 
 ## How to Install 
 
