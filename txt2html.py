@@ -81,7 +81,7 @@ def process_folder(input_folder, output_folder):
         process_text_file(input_file, output_folder)
 
 def main():
-    version = "0.1.1"
+    version = "0.1.2"
 
     parser = argparse.ArgumentParser(description='txt2html')
     parser.add_argument('-o', '--output', help='Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.')
@@ -102,10 +102,12 @@ def main():
     current_script_path = os.path.abspath(__file__)
     current_script_directory = os.path.dirname(current_script_path)
 
-    #remove the output folder if it exists, except the directory containing the currently running script
+    #remove the output folder if it exists, except the directory containing the currently running script, or same as input folder
     if os.path.exists(output_folder):
-        if current_script_directory == output_folder:
+        if current_script_directory == output_folder :
             parser.error("Can not override tool's folder")
+        elif os.path.isdir(input_path) and os.path.abspath(input_path) == os.path.abspath(output_folder):
+            parser.error("Can not override input folder")
         else:
             shutil.rmtree(output_folder)
 
