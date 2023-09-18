@@ -9,6 +9,7 @@
 ## Features
 
 - This is a command-line tool process input txt files output html files.
+- Allow the user to specify either a file or folder of files as input
 
 ### Planned features
 - [x] User specified output path (version 0.1.1)
