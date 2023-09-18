@@ -19,8 +19,7 @@ def process_text_file(input_file, output_folder):
     bodyParagraph = ""
     for l in text_lines:
         updatedLine = l.strip()
-        if(len(updatedLine)>1):
-            bodyParagraph += "<p>" + updatedLine + "</p>\n"
+        bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
 
     # Generate the HTML content
