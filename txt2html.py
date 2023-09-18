@@ -2,6 +2,7 @@
 import sys
 import os
 import shutil
+import argparse
 
 def process_text_file(input_file, output_folder):
     # Read the input file, the input_file has path info
@@ -62,32 +63,42 @@ def process_folder(input_folder, output_folder):
         process_text_file(input_file, output_folder)
 
 def main():
-    version = "0.1.0"
-    if len(sys.argv) < 2 or "-h" in sys.argv or "--help" in sys.argv:
-        print("txt2html version: ", version)
-        print("Usage:")
-        print("   To generate html from a txt file: ./text2html.py input_file.txt")
-        print("   To generate html from a folder which has txt files: ./text2html.py folder-name")
-        sys.exit(0)
-    elif "-v" in sys.argv or "--version" in sys.argv:
-        print("txt2html version: ", version)
-        sys.exit(0)
+    version = "0.1.1"
 
-    # Create a folder named 'txt2html' or remove it if it exists
-    output_folder = 'txt2html'
+    parser = argparse.ArgumentParser(description='txt2html')
+    parser.add_argument('-o', '--output', help='Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.')
+    parser.add_argument('-v', '--version', action="version", version=f'txt2html {version}' ,help='Show the version')
+    
+    args, remaining_args = parser.parse_known_args()
+    if (len(remaining_args) == 0):
+        parser.error('Input is required. Use -h or --help for usage information.')
+
+    input_path = remaining_args[0]
+
+    # Use a folder name 'txt2html' under tool's folder as a default output folder
+    output_folder = os.path.abspath('txt2html')
+
+    if args.output:
+        output_folder = os.path.abspath(args.output)
+
+    current_script_path = os.path.abspath(__file__)
+    current_script_directory = os.path.dirname(current_script_path)
+
+    #remove the output folder if it exists, except the directory containing the currently running script
     if os.path.exists(output_folder):
-        shutil.rmtree(output_folder)
+        if current_script_directory == output_folder:
+            parser.error("Can not override tool's folder")
+        else:
+            shutil.rmtree(output_folder)
 
     os.makedirs(output_folder)
-
-    input_path = sys.argv[1]
 
     if os.path.isfile(input_path):
         process_text_file(input_path, output_folder)
     elif os.path.isdir(input_path):
         process_folder(input_path, output_folder)
     else:
-        print("Error: Invalid input. Please provide a valid text file or folder.")
+        parser.error("Invalid input. Please provide a valid text file or folder.")
 
 if (__name__ == "__main__"):
     main()
