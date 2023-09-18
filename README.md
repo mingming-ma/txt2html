@@ -11,7 +11,7 @@
 - This is a command-line tool process input txt files output html files.
 
 ### Planned features
-- [ ] User specified output path
+- [x] User specified output path (version 0.1.1)
 - [ ] Set title from input file content
 
 ## How to Install 
@@ -57,3 +57,4 @@ To generate html from a folder which has txt files:
 | --------- | ----------- |
 | -v, --version | Displays the version of the tool |
 | -h, --help | Displays the help message |
+| -o, --output | Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.|
