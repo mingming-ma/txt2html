@@ -85,7 +85,7 @@ def process_text_file(input_file, output_folder):
             # Set updatedLine to modifiedLine
             updatedLine = modifiedLine
                  
-        bodyParagraph += "<p>" + updatedLine + "</p>\n"
+            bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
     # Generate the HTML content
     html_content = f"""
