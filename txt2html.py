@@ -18,9 +18,15 @@ def process_line(file_line):
     for word in words:
         # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
         # If the word matches a Markdown regex it is modified with appropriate HTML tags
+        
         # Check if word matches either italic regex pattern
         if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
             # Replace beginning and ending '*' or "_" with <i>...</i> tags
+            # Examples: 
+            #   *word* -> <i>word</i>
+            #   _word_ -> <i>word</i>
+            #   _word* -> _word*
+            #   __word__ -> <i>_word_</i>
             word = '<i>' + word[1:-1] + '</i>'
         
         # At the end, add word to modifiedLine whether it was modified or not
@@ -58,55 +64,23 @@ def process_text_file(input_file, output_folder):
             bodyParagraph += "<h1>" + title + "</h1>"
             html_title = True
 
-
             for i in range(1, len(text_lines)):
                 updatedLine = text_lines[i].strip()
 
+                #Check if input_file is Markdown (.md)
                 if (input_file.endswith(".md")):
-                    # # Split updatedLine into words
-                    # words = updatedLine.split()
-
-                    # # Temporary line
-                    # modifiedLine = ""
-                    # for word in words:
-                    #     # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
-                    #     # If the word matches a Markdown regex it is modified with appropriate HTML tags
-    
-                    #     # Check if word matches either italic regex pattern
-                    #     if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
-                    #         # Replace beginning and ending '*' or "_" with <i>...</i> tags
-                    #         word = '<i>' + word[1:-1] + '</i>'
-                        
-                    #     # At the end, add word to modifiedLine whether it was modified or not
-                    #     modifiedLine += word + ' '
-                    # # Set updatedLine to modifiedLine
-                    # updatedLine = modifiedLine
+                    # Process updatedLine with addition Markdown conversion logic
                     updatedLine = process_line(updatedLine)
+
                 bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
     if not html_title:
         for l in text_lines:
             updatedLine = l.strip()
 
+            #Check if input_file is Markdown (.md)
             if (input_file.endswith(".md")):
-                # # Split updatedLine into words
-                # words = updatedLine.split()
-
-                # # Temporary line
-                # modifiedLine = ""
-                # for word in words:
-                #     # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
-                #     # If the word matches a Markdown regex it is modified with appropriate HTML tags
-
-                #     # Check if word matches either italic regex pattern
-                #     if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
-                #         # Replace beginning and ending '*' or "_" with <i>...</i> tags
-                #         word = '<i>' + word[1:-1] + '</i>'
-
-                #     # At the end, add word to modifiedLine whether it was modified or not
-                #     modifiedLine += word + ' '
-                # # Set updatedLine to modifiedLine
-                # updatedLine = modifiedLine
+                # Process updatedLine with addition Markdown conversion logic
                 updatedLine = process_line(updatedLine)
                  
             bodyParagraph += "<p>" + updatedLine + "</p>\n"
