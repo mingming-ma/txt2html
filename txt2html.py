@@ -5,6 +5,29 @@ import shutil
 import argparse
 import re
 
+def process_line(file_line):
+    # Markdown Pattern Regular Expressions
+    italic_pattern1 = r'(?<!\*)\*(?:\*|[^*]+)\*(?!\*)'
+    italic_pattern2 = r'(?<!\_)_(?:\_|[^*]+)_(?!\_)'
+
+    # Split updatedLine into words
+    words = file_line.split()
+
+    # Temporary line
+    modifiedLine = ""
+    for word in words:
+        # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
+        # If the word matches a Markdown regex it is modified with appropriate HTML tags
+        # Check if word matches either italic regex pattern
+        if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
+            # Replace beginning and ending '*' or "_" with <i>...</i> tags
+            word = '<i>' + word[1:-1] + '</i>'
+        
+        # At the end, add word to modifiedLine whether it was modified or not
+        modifiedLine += word + ' '
+
+    return modifiedLine
+
 def process_text_file(input_file, output_folder):
     # Read the input file, the input_file has path info
     filename = os.path.splitext(os.path.basename(input_file))[0]
@@ -22,9 +45,7 @@ def process_text_file(input_file, output_folder):
     title = filename
     html_title = False
 
-    # Markdown Pattern Regular Expressions
-    italic_pattern1 = r'(?<!\*)\*(?:\*|[^*]+)\*(?!\*)'
-    italic_pattern2 = r'(?<!\_)_(?:\_|[^*]+)_(?!\_)'
+
 
     # Read the first line
     if len(text_lines) >= 1:
@@ -42,25 +63,25 @@ def process_text_file(input_file, output_folder):
                 updatedLine = text_lines[i].strip()
 
                 if (input_file.endswith(".md")):
-                    # Split updatedLine into words
-                    words = updatedLine.split()
+                    # # Split updatedLine into words
+                    # words = updatedLine.split()
 
-                    # Temporary line
-                    modifiedLine = ""
-                    for word in words:
-                        # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
-                        # If the word matches a Markdown regex it is modified with appropriate HTML tags
+                    # # Temporary line
+                    # modifiedLine = ""
+                    # for word in words:
+                    #     # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
+                    #     # If the word matches a Markdown regex it is modified with appropriate HTML tags
     
-                        # Check if word matches either italic regex pattern
-                        if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
-                            # Replace beginning and ending '*' or "_" with <i>...</i> tags
-                            word = '<i>' + word[1:-1] + '</i>'
+                    #     # Check if word matches either italic regex pattern
+                    #     if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
+                    #         # Replace beginning and ending '*' or "_" with <i>...</i> tags
+                    #         word = '<i>' + word[1:-1] + '</i>'
                         
-                        # At the end, add word to modifiedLine whether it was modified or not
-                        modifiedLine += word + ' '
-                    # Set updatedLine to modifiedLine
-                    updatedLine = modifiedLine
-
+                    #     # At the end, add word to modifiedLine whether it was modified or not
+                    #     modifiedLine += word + ' '
+                    # # Set updatedLine to modifiedLine
+                    # updatedLine = modifiedLine
+                    updatedLine = process_line(updatedLine)
                 bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
     if not html_title:
@@ -68,24 +89,25 @@ def process_text_file(input_file, output_folder):
             updatedLine = l.strip()
 
             if (input_file.endswith(".md")):
-                # Split updatedLine into words
-                words = updatedLine.split()
+                # # Split updatedLine into words
+                # words = updatedLine.split()
 
-                # Temporary line
-                modifiedLine = ""
-                for word in words:
-                    # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
-                    # If the word matches a Markdown regex it is modified with appropriate HTML tags
+                # # Temporary line
+                # modifiedLine = ""
+                # for word in words:
+                #     # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
+                #     # If the word matches a Markdown regex it is modified with appropriate HTML tags
 
-                    # Check if word matches either italic regex pattern
-                    if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
-                        # Replace beginning and ending '*' or "_" with <i>...</i> tags
-                        word = '<i>' + word[1:-1] + '</i>'
+                #     # Check if word matches either italic regex pattern
+                #     if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
+                #         # Replace beginning and ending '*' or "_" with <i>...</i> tags
+                #         word = '<i>' + word[1:-1] + '</i>'
 
-                    # At the end, add word to modifiedLine whether it was modified or not
-                    modifiedLine += word + ' '
-                # Set updatedLine to modifiedLine
-                updatedLine = modifiedLine
+                #     # At the end, add word to modifiedLine whether it was modified or not
+                #     modifiedLine += word + ' '
+                # # Set updatedLine to modifiedLine
+                # updatedLine = modifiedLine
+                updatedLine = process_line(updatedLine)
                  
             bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
