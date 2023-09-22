@@ -74,9 +74,12 @@ def process_folder(input_folder, output_folder):
     # Get all md files in the input_folder, for now first depth, not recursive
     md_files = [f for f in os.listdir(input_folder) if f.endswith(".md")]
 
+    # Combine list of txt files and list of md files into one
     target_files = txt_files + md_files
-    if not txt_files:
-        print(f"No .txt files found in {input_folder}.")
+
+    # Stop program if no .txt or .md files found in input_folder
+    if not target_files:
+        print(f"No .txt or .md files found in {input_folder}.")
         return
     
     for txt_file in txt_files:
