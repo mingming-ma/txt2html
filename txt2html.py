@@ -82,8 +82,8 @@ def process_folder(input_folder, output_folder):
         print(f"No .txt or .md files found in {input_folder}.")
         return
     
-    for txt_file in txt_files:
-        # Get the full path to the input .txt file
+    for txt_file in target_files:
+        # Get the full path to the input .txt or .md file
         input_file = os.path.join(input_folder, txt_file)
         process_text_file(input_file, output_folder)
 
