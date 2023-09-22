@@ -5,10 +5,20 @@ import shutil
 import argparse
 import re
 
-def process_line(file_line):
+def contains_italics(word):
     # Markdown Pattern Regular Expressions
+
+    # Matches *word*, *WORD*, *woRd*, **word**
     italic_pattern1 = r'(?<!\*)\*(?:\*|[^*]+)\*(?!\*)'
+
+    # Matches _word_, _WORD_, _woRd_, __word__
     italic_pattern2 = r'(?<!\_)_(?:\_|[^*]+)_(?!\_)'
+
+    # Return True if word matches either RegEx pattern, False otherwise
+    return (re.search(italic_pattern1, word) or re.search(italic_pattern2, word))
+
+def process_line(file_line):
+
 
     # Split updatedLine into words
     words = file_line.split()
@@ -20,7 +30,7 @@ def process_line(file_line):
         # If the word matches a Markdown regex it is modified with appropriate HTML tags
         
         # Check if word matches either italic regex pattern
-        if (re.search(italic_pattern1, word) or re.search(italic_pattern2, word)):
+        if contains_italics(word):
             # Replace beginning and ending '*' or "_" with <i>...</i> tags
             # Examples: 
             #   *word* -> <i>word</i>
