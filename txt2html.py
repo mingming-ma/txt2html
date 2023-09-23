@@ -3,6 +3,62 @@ import sys
 import os
 import shutil
 import argparse
+import re
+
+# # TO-DO #1: implement contains_bold(word)
+# def contains_bold(word):
+#     # Define regex pattern for bold syntax (asterisk)
+
+#     # Define regex pattern for bold syntax (underscore)
+
+#     # Return true if word matches either RegEx pattern, False otherwise using re.search(regex, string)
+
+def contains_italics(word):
+    # Markdown Pattern Regular Expressions
+
+    # Matches *word*, *WORD*, *woRd*, **word**
+    italic_pattern1 = r'(?<!\*)\*(?:\*|[^*]+)\*(?!\*)'
+
+    # Matches _word_, _WORD_, _woRd_, __word__
+    italic_pattern2 = r'(?<!\_)_(?:\_|[^*]+)_(?!\_)'
+
+    # Return True if word matches either RegEx pattern, False otherwise
+    return (re.search(italic_pattern1, word) or re.search(italic_pattern2, word))
+
+def process_line(file_line):
+
+
+    # Split updatedLine into words
+    words = file_line.split()
+
+    # Temporary line
+    modifiedLine = ""
+    for word in words:
+        # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
+        # If the word matches a Markdown regex it is modified with appropriate HTML tags
+
+        # Check if word matches either bold regex pattern:
+
+        # # TO-DO #3: Uncomment lines 43-44 after completing TO-DO #2
+        # if contains_bold(word):
+            # # TO-DO #2: replace wrapper **...** or __...__ with <b>...</b> 
+        # # TO-DO #4: Change line 48 to: elif contains_italics(word):
+
+        # Check if word matches either italic regex pattern
+        if contains_italics(word):
+            # Replace beginning and ending '*' or "_" with <i>...</i> tags
+            # Examples: 
+            #   *word* -> <i>word</i>
+            #   _word_ -> <i>word</i>
+            #   _word* -> _word*
+            #   __word__ -> <i>_word_</i> (note: this is an undesired conversion that will
+            # be eliminated if you check for bold syntax before checking for italics syntax)
+            word = '<i>' + word[1:-1] + '</i>'
+        
+        # At the end, add word to modifiedLine whether it was modified or not
+        modifiedLine += word + ' '
+
+    return modifiedLine
 
 def process_text_file(input_file, output_folder):
     # Read the input file, the input_file has path info
@@ -21,6 +77,8 @@ def process_text_file(input_file, output_folder):
     title = filename
     html_title = False
 
+
+
     # Read the first line
     if len(text_lines) >= 1:
         first_line = text_lines[0].strip()
@@ -34,11 +92,23 @@ def process_text_file(input_file, output_folder):
 
             for i in range(1, len(text_lines)):
                 updatedLine = text_lines[i].strip()
+
+                #Check if input_file is Markdown (.md)
+                if (input_file.endswith(".md")):
+                    # Process updatedLine with addition Markdown conversion logic
+                    updatedLine = process_line(updatedLine)
+
                 bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
     if not html_title:
         for l in text_lines:
             updatedLine = l.strip()
+
+            #Check if input_file is Markdown (.md)
+            if (input_file.endswith(".md")):
+                # Process updatedLine with addition Markdown conversion logic
+                updatedLine = process_line(updatedLine)
+                 
             bodyParagraph += "<p>" + updatedLine + "</p>\n"
 
     # Generate the HTML content
@@ -71,12 +141,19 @@ def process_folder(input_folder, output_folder):
     # Get all txt files in the input_folder, for now first depth, not recursive
     txt_files = [f for f in os.listdir(input_folder) if f.endswith(".txt")]
 
-    if not txt_files:
-        print(f"No .txt files found in {input_folder}.")
+    # Get all md files in the input_folder, for now first depth, not recursive
+    md_files = [f for f in os.listdir(input_folder) if f.endswith(".md")]
+
+    # Combine list of txt files and list of md files into one
+    target_files = txt_files + md_files
+
+    # Stop program if no .txt or .md files found in input_folder
+    if not target_files:
+        print(f"No .txt or .md files found in {input_folder}.")
         return
     
-    for txt_file in txt_files:
-        # Get the full path to the input .txt file
+    for txt_file in target_files:
+        # Get the full path to the input .txt or .md file
         input_file = os.path.join(input_folder, txt_file)
         process_text_file(input_file, output_folder)
 
