@@ -14,7 +14,7 @@
 ### Markdown Conversions
 - This command-line tool enables the following Markdown conversions to HTML:
   - Paragraphs (blank-line separated) are transformed to \<p>Paragraph Content\</p>
-  - Italics (\*word\* or \_word\_ to \<i>word\</i>
+  - Italics (\*word\* or \_word\_ to \<i>word\</i>)
 
 ### Planned features
 - [x] User specified output path (version 0.1.1)
