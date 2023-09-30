@@ -19,6 +19,7 @@
 ### Planned features
 - [x] User specified output path (version 0.1.1)
 - [x] Set title from input file content (version 0.1.2)
+- [x] Support Markdown file input and Italics Parsing (version 0.1.3)
 
 ## How to Install 
 

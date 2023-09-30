@@ -158,7 +158,7 @@ def process_folder(input_folder, output_folder):
         process_text_file(input_file, output_folder)
 
 def main():
-    version = "0.1.2"
+    version = "0.1.3"
 
     parser = argparse.ArgumentParser(description='txt2html')
     parser.add_argument('-o', '--output', help='Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.')
