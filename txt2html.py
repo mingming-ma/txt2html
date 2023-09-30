@@ -97,8 +97,12 @@ def process_text_file(input_file, output_folder):
 
                 #Check if input_file is Markdown (.md)
                 if (input_file.endswith(".md")):
-                    # Process updatedLine with addition Markdown conversion logic
-                    updatedLine = process_line(updatedLine)
+                    if (updatedLine.__eq__("---")):
+                        bodyParagraph += "<hr>"
+                        continue
+                    else:
+                        # Process updatedLine with addition Markdown conversion logic
+                        updatedLine = process_line(updatedLine)
 
                 bodyParagraph += f"<p lang=\"{lang_attribute_value}\">"  + updatedLine + "</p>\n"
 
@@ -108,8 +112,12 @@ def process_text_file(input_file, output_folder):
 
             #Check if input_file is Markdown (.md)
             if (input_file.endswith(".md")):
-                # Process updatedLine with addition Markdown conversion logic
-                updatedLine = process_line(updatedLine)
+                if (updatedLine.__eq__("---")):
+                    bodyParagraph += "<hr>"
+                    continue
+                else:
+                    # Process updatedLine with addition Markdown conversion logic
+                    updatedLine = process_line(updatedLine)
                  
             bodyParagraph += f"<p lang=\"{lang_attribute_value}\">"  + updatedLine + "</p>\n"
 
