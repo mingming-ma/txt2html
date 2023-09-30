@@ -20,6 +20,7 @@
 - [x] User specified output path (version 0.1.1)
 - [x] Set title from input file content (version 0.1.2)
 - [x] Support Markdown file input and Italics Parsing (version 0.1.3)
+- [x] Support language attribute configuration (version 0.1.3)
 
 ## How to Install 
 
@@ -65,3 +66,4 @@ To generate html from a folder which has txt files:
 | -h, --help | Displays the help message |
 | -v, --version | Displays the version of the tool |
 | -o, --output | Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.|
+| -l, --lang | Specify the language to use when generating the lang attribute on the root <html> element. If not specified, "en-CA" will be used.|

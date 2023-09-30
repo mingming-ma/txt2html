@@ -5,6 +5,8 @@ import shutil
 import argparse
 import re
 
+lang_attribute_value = "en-CA"
+
 # # TO-DO #1: implement contains_bold(word)
 # def contains_bold(word):
 #     # Define regex pattern for bold syntax (asterisk)
@@ -87,7 +89,7 @@ def process_text_file(input_file, output_folder):
         if first_line and len(text_lines) >= 3 and text_lines[1].strip() == "" and text_lines[2].strip() == "":
             # Use first_line as a title content
             title = first_line
-            bodyParagraph += "<h1>" + title + "</h1>"
+            bodyParagraph += f"<h1 lang=\"{lang_attribute_value}\">" + title + "</h1>"
             html_title = True
 
             for i in range(1, len(text_lines)):
@@ -98,7 +100,7 @@ def process_text_file(input_file, output_folder):
                     # Process updatedLine with addition Markdown conversion logic
                     updatedLine = process_line(updatedLine)
 
-                bodyParagraph += "<p>" + updatedLine + "</p>\n"
+                bodyParagraph += f"<p lang=\"{lang_attribute_value}\">"  + updatedLine + "</p>\n"
 
     if not html_title:
         for l in text_lines:
@@ -109,7 +111,7 @@ def process_text_file(input_file, output_folder):
                 # Process updatedLine with addition Markdown conversion logic
                 updatedLine = process_line(updatedLine)
                  
-            bodyParagraph += "<p>" + updatedLine + "</p>\n"
+            bodyParagraph += f"<p lang=\"{lang_attribute_value}\">"  + updatedLine + "</p>\n"
 
     # Generate the HTML content
     html_content = f"""
@@ -158,12 +160,13 @@ def process_folder(input_folder, output_folder):
         process_text_file(input_file, output_folder)
 
 def main():
-    version = "0.1.3"
+    version = "0.1.4"
 
     parser = argparse.ArgumentParser(description='txt2html')
     parser.add_argument('-o', '--output', help='Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.')
     parser.add_argument('-v', '--version', action="version", version=f'txt2html {version}' ,help='Show the version')
-    
+    parser.add_argument('-l', '--lang', help='Specify the language to use when generating the lang attribute on the root <html> element. If not specified, "en-CA" will be used.')
+
     args, remaining_args = parser.parse_known_args()
     if (len(remaining_args) == 0):
         parser.error('Input is required. Use -h or --help for usage information.')
@@ -189,6 +192,10 @@ def main():
             shutil.rmtree(output_folder)
 
     os.makedirs(output_folder)
+
+    global lang_attribute_value
+    if args.lang:
+        lang_attribute_value = args.lang
 
     if os.path.isfile(input_path):
         process_text_file(input_path, output_folder)
