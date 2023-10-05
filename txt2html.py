@@ -215,6 +215,8 @@ def main():
                 lang_attribute_value = config_data.get("lang", lang_attribute_value)
         except FileNotFoundError:
             print(f"Config file not found: {config_file_path}")
+        except tomli.TOMLDecodeError:
+            print(f"Error parsing the config file: {config_file_path}")
 
     if os.path.isfile(input_path):
         process_text_file(input_path, output_folder)
