@@ -4,6 +4,7 @@ import os
 import shutil
 import argparse
 import re
+import tomli
 
 lang_attribute_value = "en-CA"
 
@@ -174,7 +175,7 @@ def main():
     parser.add_argument('-o', '--output', help='Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.')
     parser.add_argument('-v', '--version', action="version", version=f'txt2html {version}' ,help='Show the version')
     parser.add_argument('-l', '--lang', help='Specify the language to use when generating the lang attribute on the root <html> element. If not specified, "en-CA" will be used.')
-
+    parser.add_argument ('-c', '--config', help="URL to a TOML config file to be used as a config for the HTML files")
     args, remaining_args = parser.parse_known_args()
     if (len(remaining_args) == 0):
         parser.error('Input is required. Use -h or --help for usage information.')
