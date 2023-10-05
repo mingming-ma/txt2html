@@ -188,6 +188,23 @@ def main():
     if args.output:
         output_folder = os.path.abspath(args.output)
 
+    global lang_attribute_value
+    if args.lang:
+        lang_attribute_value = args.lang
+
+    if args.config:
+        config_file_path = args.config
+        try:
+            with open(config_file_path, "rb") as config_file:
+                config_data = tomli.load(config_file)
+                
+                output_folder = config_data.get("output", output_folder)
+                lang_attribute_value = config_data.get("lang", lang_attribute_value)
+        except FileNotFoundError:
+            parser.error(f"Config file not found: {config_file_path}")
+        except tomli.TOMLDecodeError:
+            parser.error(f"Error parsing the config file: {config_file_path}")
+
     current_script_path = os.path.abspath(__file__)
     current_script_directory = os.path.dirname(current_script_path)
 
@@ -201,22 +218,6 @@ def main():
             shutil.rmtree(output_folder)
 
     os.makedirs(output_folder)
-
-    global lang_attribute_value
-    if args.lang:
-        lang_attribute_value = args.lang
-
-    if args.config:
-        config_file_path = args.config
-        try:
-            with open(config_file_path, "rb") as config_file:
-                config_data = tomli.load(config_file)
-
-                lang_attribute_value = config_data.get("lang", lang_attribute_value)
-        except FileNotFoundError:
-            parser.error(f"Config file not found: {config_file_path}")
-        except tomli.TOMLDecodeError:
-            parser.error(f"Error parsing the config file: {config_file_path}")
 
     if os.path.isfile(input_path):
         process_text_file(input_path, output_folder)
