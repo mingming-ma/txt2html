@@ -206,6 +206,16 @@ def main():
     if args.lang:
         lang_attribute_value = args.lang
 
+    if args.config:
+        config_file_path = args.config
+        try:
+            with open(config_file_path, "r") as config_file:
+                config_data = tomli.load(config_file)
+                
+                lang_attribute = config_data.get("lang", lang_attribute)
+        except FileNotFoundError:
+            print(f"Config file not found: {config_file_path}")
+
     if os.path.isfile(input_path):
         process_text_file(input_path, output_folder)
     elif os.path.isdir(input_path):
