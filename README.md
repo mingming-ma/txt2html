@@ -64,9 +64,9 @@ To specify a config file while converting html from text file:
 ```
 
 ## Config.toml Sample
-
-lang="Fr"
-
+```
+lang = "Fr"
+```
 
 ## Command Flags
 
