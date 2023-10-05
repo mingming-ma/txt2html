@@ -22,7 +22,7 @@
 - [x] Set title from input file content (version 0.1.2)
 - [x] Support Markdown file input and Italics Parsing (version 0.1.3)
 - [x] Add support for Markdown horizontal rule (`---`) to convert that to an `<hr>` tag. Support language attribute configuration (version 0.1.4)
-- [x] Add support for TOML config files to parse flags (version 0.1.4)
+- [x] Add support for TOML config files to parse flags (version 0.1.5)
 
 ## How to Install 
 
