@@ -209,10 +209,10 @@ def main():
     if args.config:
         config_file_path = args.config
         try:
-            with open(config_file_path, "r") as config_file:
+            with open(config_file_path, "rb") as config_file:
                 config_data = tomli.load(config_file)
-                
-                lang_attribute = config_data.get("lang", lang_attribute)
+
+                lang_attribute_value = config_data.get("lang", lang_attribute_value)
         except FileNotFoundError:
             print(f"Config file not found: {config_file_path}")
 
