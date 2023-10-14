@@ -6,8 +6,6 @@ import argparse
 import re
 import tomli
 
-lang_attribute_value = "en-CA"
-
 # # TO-DO #1: implement contains_bold(word)
 # def contains_bold(word):
 #     # Define regex pattern for bold syntax (asterisk)
@@ -63,7 +61,7 @@ def process_line(file_line):
 
     return modifiedLine
 
-def process_text_file(input_file, output_folder):
+def process_text_file(input_file, output_folder, lang_attribute_value = "en-CA"):
     # Read the input file, the input_file has path info
     filename = os.path.splitext(os.path.basename(input_file))[0]
 
@@ -148,25 +146,19 @@ def process_text_file(input_file, output_folder):
     except Exception as e:
         print(f"Error writing to {output_file}: {e}")
 
-def process_folder(input_folder, output_folder):
-    # Get all txt files in the input_folder, for now first depth, not recursive
-    txt_files = [f for f in os.listdir(input_folder) if f.endswith(".txt")]
-
-    # Get all md files in the input_folder, for now first depth, not recursive
-    md_files = [f for f in os.listdir(input_folder) if f.endswith(".md")]
-
-    # Combine list of txt files and list of md files into one
-    target_files = txt_files + md_files
+def process_folder(input_folder, output_folder, lang_attribute_value):
+    # Get all target files in the input_folder, for now first depth, not recursive
+    target_files = [f for f in os.listdir(input_folder) if (f.endswith(".txt") or f.endswith(".md"))]
 
     # Stop program if no .txt or .md files found in input_folder
     if not target_files:
         print(f"No .txt or .md files found in {input_folder}.")
         return
     
-    for txt_file in target_files:
+    for file in target_files:
         # Get the full path to the input .txt or .md file
-        input_file = os.path.join(input_folder, txt_file)
-        process_text_file(input_file, output_folder)
+        input_file = os.path.join(input_folder, file)
+        process_text_file(input_file, output_folder, lang_attribute_value)
 
 def main():
     version = "0.1.5"
@@ -188,7 +180,7 @@ def main():
     if args.output:
         output_folder = os.path.abspath(args.output)
 
-    global lang_attribute_value
+    lang_attribute_value = "en-CA"
     if args.lang:
         lang_attribute_value = args.lang
 
@@ -220,9 +212,9 @@ def main():
     os.makedirs(output_folder)
 
     if os.path.isfile(input_path):
-        process_text_file(input_path, output_folder)
+        process_text_file(input_path, output_folder, lang_attribute_value)
     elif os.path.isdir(input_path):
-        process_folder(input_path, output_folder)
+        process_folder(input_path, output_folder, lang_attribute_value)
     else:
         parser.error("Invalid input. Please provide a valid text file or folder.")
 
