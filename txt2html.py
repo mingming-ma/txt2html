@@ -94,6 +94,18 @@ def process_text_file(input_file, output_folder, lang_attribute_value = "en-CA")
             for i in range(1, len(text_lines)):
                 updatedLine = text_lines[i].strip()
 
+                # Check for static assets in the form of </img/txt2html.png>
+                static_asset_pattern = r'</([^/]+/[^>]+)>'
+                matches = re.findall(static_asset_pattern, updatedLine)
+                # Use a folder name 'static' under tool's folder as a default asset folder
+                static_dir = os.path.abspath('static')
+                for match in matches:
+                    asset_path = os.path.join(static_dir, match)
+                    if os.path.exists(asset_path):
+                        # Replace the static asset tag with the appropriate HTML tag
+                        img_tag = f'<img src="{asset_path}">'
+                        updatedLine = updatedLine.replace(f'</{match}>', img_tag)
+
                 #Check if input_file is Markdown (.md)
                 if (input_file.endswith(".md")):
                     if (updatedLine.__eq__("---")):
