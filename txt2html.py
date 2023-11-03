@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sys
 import os
 import shutil
 import argparse
@@ -12,56 +11,60 @@ import tomli
 
 #     # Define regex pattern for bold syntax (underscore)
 
-#     # Return true if word matches either RegEx pattern, False otherwise using re.search(regex, string)
+#     # Return true if word matches either RegEx pattern, False otherwise using
+# re.search(regex, string)
+
 
 def contains_italics(word):
     # Markdown Pattern Regular Expressions
 
     # Matches *word*, *WORD*, *woRd*, **word**
-    italic_pattern1 = r'(?<!\*)\*(?:\*|[^*]+)\*(?!\*)'
+    italic_pattern1 = r"(?<!\*)\*(?:\*|[^*]+)\*(?!\*)"
 
     # Matches _word_, _WORD_, _woRd_, __word__
-    italic_pattern2 = r'(?<!\_)_(?:\_|[^*]+)_(?!\_)'
+    italic_pattern2 = r"(?<!\_)_(?:\_|[^*]+)_(?!\_)"
 
     # Return True if word matches either RegEx pattern, False otherwise
-    return (re.search(italic_pattern1, word) or re.search(italic_pattern2, word))
+    return re.search(italic_pattern1, word) or re.search(italic_pattern2, word)
+
 
 def process_line(file_line):
-
-
     # Split updatedLine into words
     words = file_line.split()
 
     # Temporary line
     modifiedLine = ""
     for word in words:
-        # This if/else structure checks if the word matches a Markdown regex pattern (italics only for now)
+        # This if/else structure checks if the word matches a Markdown regex pattern
+        # (italics only for now)
         # If the word matches a Markdown regex it is modified with appropriate HTML tags
 
         # Check if word matches either bold regex pattern:
 
         # # TO-DO #3: Uncomment lines 43-44 after completing TO-DO #2
         # if contains_bold(word):
-            # # TO-DO #2: replace wrapper **...** or __...__ with <b>...</b> 
+        # # TO-DO #2: replace wrapper **...** or __...__ with <b>...</b>
         # # TO-DO #4: Change line 48 to: elif contains_italics(word):
 
         # Check if word matches either italic regex pattern
         if contains_italics(word):
             # Replace beginning and ending '*' or "_" with <i>...</i> tags
-            # Examples: 
+            # Examples:
             #   *word* -> <i>word</i>
             #   _word_ -> <i>word</i>
             #   _word* -> _word*
-            #   __word__ -> <i>_word_</i> (note: this is an undesired conversion that will
-            # be eliminated if you check for bold syntax before checking for italics syntax)
-            word = '<i>' + word[1:-1] + '</i>'
-        
+            #   __word__ -> <i>_word_</i> (note: this is an undesired conversion that
+            # will be eliminated if you check for bold syntax before checking for
+            # italics syntax)
+            word = "<i>" + word[1:-1] + "</i>"
+
         # At the end, add word to modifiedLine whether it was modified or not
-        modifiedLine += word + ' '
+        modifiedLine += word + " "
 
     return modifiedLine
 
-def process_text_file(input_file, output_folder, lang_attribute_value = "en-CA"):
+
+def process_text_file(input_file, output_folder, lang_attribute_value="en-CA"):
     # Read the input file, the input_file has path info
     filename = os.path.splitext(os.path.basename(input_file))[0]
 
@@ -78,59 +81,66 @@ def process_text_file(input_file, output_folder, lang_attribute_value = "en-CA")
     title = filename
     html_title = False
 
-
-
     # Read the first line
     if len(text_lines) >= 1:
         first_line = text_lines[0].strip()
 
         # Check if it's not empty and there are at least two more lines available
-        if first_line and len(text_lines) >= 3 and text_lines[1].strip() == "" and text_lines[2].strip() == "":
+        if (
+            first_line
+            and len(text_lines) >= 3
+            and text_lines[1].strip() == ""
+            and text_lines[2].strip() == ""
+        ):
             # Use first_line as a title content
             title = first_line
-            bodyParagraph += f"<h1 lang=\"{lang_attribute_value}\">" + title + "</h1>"
+            bodyParagraph += f'<h1 lang="{lang_attribute_value}">' + title + "</h1>"
             html_title = True
 
             for i in range(1, len(text_lines)):
                 updatedLine = text_lines[i].strip()
 
                 # Check for static assets in the form of </img/txt2html.png>
-                static_asset_pattern = r'</([^/]+/[^>]+)>'
+                static_asset_pattern = r"</([^/]+/[^>]+)>"
                 matches = re.findall(static_asset_pattern, updatedLine)
-                # Use a folder name 'static' under tool's folder as a default asset folder
-                static_dir = os.path.abspath('static')
+                # Use a 'static' under tool's folder as a default asset folder
+                static_dir = os.path.abspath("static")
                 for match in matches:
                     asset_path = os.path.join(static_dir, match)
                     if os.path.exists(asset_path):
                         # Replace the static asset tag with the appropriate HTML tag
                         img_tag = f'<img src="{asset_path}">'
-                        updatedLine = updatedLine.replace(f'</{match}>', img_tag)
+                        updatedLine = updatedLine.replace(f"</{match}>", img_tag)
 
-                #Check if input_file is Markdown (.md)
-                if (input_file.endswith(".md")):
-                    if (updatedLine.__eq__("---")):
+                # Check if input_file is Markdown (.md)
+                if input_file.endswith(".md"):
+                    if updatedLine.__eq__("---"):
                         bodyParagraph += "<hr>"
                         continue
                     else:
                         # Process updatedLine with addition Markdown conversion logic
                         updatedLine = process_line(updatedLine)
 
-                bodyParagraph += f"<p lang=\"{lang_attribute_value}\">"  + updatedLine + "</p>\n"
+                bodyParagraph += (
+                    f'<p lang="{lang_attribute_value}">' + updatedLine + "</p>\n"
+                )
 
     if not html_title:
-        for l in text_lines:
-            updatedLine = l.strip()
+        for line in text_lines:
+            updatedLine = line.strip()
 
-            #Check if input_file is Markdown (.md)
-            if (input_file.endswith(".md")):
-                if (updatedLine.__eq__("---")):
+            # Check if input_file is Markdown (.md)
+            if input_file.endswith(".md"):
+                if updatedLine.__eq__("---"):
                     bodyParagraph += "<hr>"
                     continue
                 else:
                     # Process updatedLine with addition Markdown conversion logic
                     updatedLine = process_line(updatedLine)
-                 
-            bodyParagraph += f"<p lang=\"{lang_attribute_value}\">"  + updatedLine + "</p>\n"
+
+            bodyParagraph += (
+                f'<p lang="{lang_attribute_value}">' + updatedLine + "</p>\n"
+            )
 
     # Generate the HTML content
     html_content = f"""
@@ -158,36 +168,60 @@ def process_text_file(input_file, output_folder, lang_attribute_value = "en-CA")
     except Exception as e:
         print(f"Error writing to {output_file}: {e}")
 
+
 def process_folder(input_folder, output_folder, lang_attribute_value):
     # Get all target files in the input_folder, for now first depth, not recursive
-    target_files = [f for f in os.listdir(input_folder) if (f.endswith(".txt") or f.endswith(".md"))]
+    target_files = [
+        f for f in os.listdir(input_folder) if (f.endswith(".txt") or f.endswith(".md"))
+    ]
 
     # Stop program if no .txt or .md files found in input_folder
     if not target_files:
         print(f"No .txt or .md files found in {input_folder}.")
         return
-    
+
     for file in target_files:
         # Get the full path to the input .txt or .md file
         input_file = os.path.join(input_folder, file)
         process_text_file(input_file, output_folder, lang_attribute_value)
 
+
 def main():
     version = "0.1.5"
 
-    parser = argparse.ArgumentParser(description='txt2html')
-    parser.add_argument('-o', '--output', help='Specify the output directory. Existing output folder will first be removed. If not specified, "./txt2html" will be used.')
-    parser.add_argument('-v', '--version', action="version", version=f'txt2html {version}' ,help='Show the version')
-    parser.add_argument('-l', '--lang', help='Specify the language to use when generating the lang attribute on the root <html> element. If not specified, "en-CA" will be used.')
-    parser.add_argument ('-c', '--config', help="URL to a TOML config file to be used as a config for the HTML files")
+    parser = argparse.ArgumentParser(description="txt2html")
+    parser.add_argument(
+        "-o",
+        "--output",
+        help='Specify the output directory. Existing output folder will first be \
+        removed. If not specified, "./txt2html" will be used.',
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"txt2html {version}",
+        help="Show the version",
+    )
+    parser.add_argument(
+        "-l",
+        "--lang",
+        help='Specify the language to use when generating the lang attribute on the\
+         root <html> element. If not specified, "en-CA" will be used.',
+    )
+    parser.add_argument(
+        "-c",
+        "--config",
+        help="URL to a TOML config file to be used as a config for the HTML files",
+    )
     args, remaining_args = parser.parse_known_args()
-    if (len(remaining_args) == 0):
-        parser.error('Input is required. Use -h or --help for usage information.')
+    if len(remaining_args) == 0:
+        parser.error("Input is required. Use -h or --help for usage information.")
 
     input_path = remaining_args[0]
 
     # Use a folder name 'txt2html' under tool's folder as a default output folder
-    output_folder = os.path.abspath('txt2html')
+    output_folder = os.path.abspath("txt2html")
 
     if args.output:
         output_folder = os.path.abspath(args.output)
@@ -201,7 +235,7 @@ def main():
         try:
             with open(config_file_path, "rb") as config_file:
                 config_data = tomli.load(config_file)
-                
+
                 output_folder = config_data.get("output", output_folder)
                 lang_attribute_value = config_data.get("lang", lang_attribute_value)
         except FileNotFoundError:
@@ -212,11 +246,14 @@ def main():
     current_script_path = os.path.abspath(__file__)
     current_script_directory = os.path.dirname(current_script_path)
 
-    #remove the output folder if it exists, except the directory containing the currently running script, or same as input folder
+    # remove the output folder if it exists, except the directory containing the
+    # currently running script, or same as input folder
     if os.path.exists(output_folder):
-        if current_script_directory == output_folder :
+        if current_script_directory == output_folder:
             parser.error("Can not override tool's folder")
-        elif os.path.isdir(input_path) and os.path.abspath(input_path) == os.path.abspath(output_folder):
+        elif os.path.isdir(input_path) and os.path.abspath(
+            input_path
+        ) == os.path.abspath(output_folder):
             parser.error("Can not override input folder")
         else:
             shutil.rmtree(output_folder)
@@ -230,5 +267,6 @@ def main():
     else:
         parser.error("Invalid input. Please provide a valid text file or folder.")
 
-if (__name__ == "__main__"):
+
+if __name__ == "__main__":
     main()
