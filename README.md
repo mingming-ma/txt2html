@@ -25,30 +25,6 @@
 - [x] Add support for TOML config files to parse flags (version 0.1.5)
 - [x] Refactor (educe code duplication, improve variable naming and get rid of global variable) (version 0.1.6)
 
-## How to Install 
-
-**In command line:**
-
-Make sure python3 is installed:
-```bash
-python3 --version
-```
-Make sure tomli is downloaded:
-```bash
-pip3 install tomli
-```
-
-Clone the Repo
-
-```bash
-git clone https://github.com/mingming-ma/txt2html.git
-cd txt2html 
-```
-
-Make the tool executable
-```bash
-chmod +x txt2html.py
-```
 ## Usage
 
 To generate html from a txt file: 
