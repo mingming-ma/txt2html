@@ -61,7 +61,7 @@ def process_line(file_line):
         # At the end, add word to modifiedLine whether it was modified or not
         modifiedLine += word + " "
 
-    return modifiedLine
+    return modifiedLine.strip()
 
 
 def process_text_file(input_file, output_folder, lang_attribute_value="en-CA"):
