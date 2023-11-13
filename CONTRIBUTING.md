@@ -78,6 +78,10 @@ flake8 txt2html.py
 ## Testing
 We use `Pytest` for the testing
 ### Install from comman line
-```
+```bash
 pip3 install pytest
+```
+### Run test
+```bash
+pytest # Or pytest <test file>.py for one specific file
 ```
