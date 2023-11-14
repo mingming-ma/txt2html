@@ -72,9 +72,9 @@ def process_text_file(input_file, output_folder, lang_attribute_value="en-CA"):
     try:
         with open(input_file, "r") as file:
             text_lines = file.readlines()
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         print(f"Error: {input_file} not found.")
-        exit()
+        raise e
 
     # Combine each line with <p> tag
     bodyParagraph = ""
