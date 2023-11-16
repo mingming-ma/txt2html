@@ -1,5 +1,4 @@
 import pytest
-import unittest
 from txt2html import process_line, process_text_file, contains_italics
 from unittest.mock import patch
 
@@ -21,8 +20,6 @@ def test_process_line(input_line, expected_output):
     result = process_line(input_line)
     assert result == expected_output
 
-
-class TestProcessTextFile(unittest.TestCase):
     # test the .txt file
     @patch("builtins.print")
     def test_process_text_file(self, mock_print):
@@ -55,8 +52,6 @@ class TestProcessTextFile(unittest.TestCase):
             "Error: examples/test-folder/invalid.txt not found."
         )
 
-
-class TestContainsItalics(unittest.TestCase):
     def test_contains_italics(self):
         result = contains_italics("*italic word*")
         self.assertTrue(result, "expect to detect italic word")
