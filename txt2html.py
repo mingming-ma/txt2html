@@ -29,39 +29,22 @@ def contains_italics(word):
 
 
 def process_line(file_line):
-    # Split updatedLine into words
-    words = file_line.split()
+    # Replace beginning and ending '*' or "_" with <i>...</i> tags
+    # Examples:
+    #   *word* -> <i>word</i>
+    #   _word_ -> <i>word</i>
+    #   _word* -> _word*
+    #   __word__ -> <i>_word_</i> (note: this is an undesired conversion that
+    # will be eliminated if you check for bold syntax before checking for
+    # italics syntax)
+    if contains_italics(file_line):
+        pattern1 = r"(?<!\*)\*(?P<content>[^*]+)\*(?!\*)"
+        pattern2 = r"(?<!\_)\_(?P<content>[^_]+)\_(?!\_)"
+        replacement = r"<i>\g<content></i>"
 
-    # Temporary line
-    modifiedLine = ""
-    for word in words:
-        # This if/else structure checks if the word matches a Markdown regex pattern
-        # (italics only for now)
-        # If the word matches a Markdown regex it is modified with appropriate HTML tags
-
-        # Check if word matches either bold regex pattern:
-
-        # # TO-DO #3: Uncomment lines 43-44 after completing TO-DO #2
-        # if contains_bold(word):
-        # # TO-DO #2: replace wrapper **...** or __...__ with <b>...</b>
-        # # TO-DO #4: Change line 48 to: elif contains_italics(word):
-
-        # Check if word matches either italic regex pattern
-        if contains_italics(word):
-            # Replace beginning and ending '*' or "_" with <i>...</i> tags
-            # Examples:
-            #   *word* -> <i>word</i>
-            #   _word_ -> <i>word</i>
-            #   _word* -> _word*
-            #   __word__ -> <i>_word_</i> (note: this is an undesired conversion that
-            # will be eliminated if you check for bold syntax before checking for
-            # italics syntax)
-            word = "<i>" + word[1:-1] + "</i>"
-
-        # At the end, add word to modifiedLine whether it was modified or not
-        modifiedLine += word + " "
-
-    return modifiedLine.strip()
+        file_line = re.sub(pattern1, replacement, file_line)
+        file_line = re.sub(pattern2, replacement, file_line)
+    return file_line
 
 
 def process_text_file(input_file, output_folder, lang_attribute_value="en-CA"):
