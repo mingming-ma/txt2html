@@ -8,9 +8,7 @@ import tomli
 # # TO-DO #1: implement contains_bold(word)
 # def contains_bold(word):
 #     # Define regex pattern for bold syntax (asterisk)
-
 #     # Define regex pattern for bold syntax (underscore)
-
 #     # Return true if word matches either RegEx pattern, False otherwise using
 # re.search(regex, string)
 
