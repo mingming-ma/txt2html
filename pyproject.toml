@@ -1,19 +1,17 @@
 [tool.poetry]
 name = "txt2html"
-version = "1.0.0"
+version = "1.0.1"
 description = "a command-line tool process input .txt files into generated .html files"
 authors = ["mingming-ma <133393905+mingming-ma@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 tomli = "^2.0.1"
-argparse = "^1.4.0"
 
 [tool.poetry.group.dev.dependencies]
 tomli = "^2.0.1"
-argparse = "^1.4.0"
 
 [build-system]
 requires = ["poetry-core"]
